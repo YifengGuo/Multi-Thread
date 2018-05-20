@@ -1,4 +1,4 @@
-package basic_java_thread;
+package basic_java_thread.implementation_by_inheritance;
 
 /**
  * Created by guoyifeng on 5/20/18.
