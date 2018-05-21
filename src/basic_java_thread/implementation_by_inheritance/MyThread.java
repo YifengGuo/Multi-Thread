@@ -27,17 +27,17 @@ public class MyThread extends Thread {
         MyThread thread3 = new MyThread(10);
 
         /*
-        By invoking run(), the run() method of its thread is invoked by main thread one by one
-        when former thread ends, the latter thread's run() will be invoked
+         * By invoking run(), the run() method of its thread is invoked by main thread one by one
+         * when former thread ends, the latter thread's run() will be invoked
          */
 //        thread1.run();
 //        thread2.run();
 //        thread3.run();
 
         /*
-        By invoking start(), each thread is executing concurrently.
-        There is no certain order which will ends first or last.
-        (thread1 - thread3 and main thread are all executing concurrently)
+         * By invoking start(), each thread is executing concurrently.
+         * There is no certain order which will ends first or last.
+         * (thread1 - thread3 and main thread are all executing concurrently)
          */
         thread1.start();
         thread2.start();
