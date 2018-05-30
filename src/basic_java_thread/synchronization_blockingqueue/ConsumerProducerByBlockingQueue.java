@@ -4,7 +4,10 @@ package basic_java_thread.synchronization_blockingqueue;
  * Created by guoyifeng on 5/25/18.
  */
 
-import java.util.concurrent.*;
+
+import java.util.Random;
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.BlockingQueue;
 
 /**
  * BlockingQueue is an important data structure in the Java util.concurrent.
@@ -68,4 +71,87 @@ import java.util.concurrent.*;
  *            element will fail until some thread put the element into this queue.
  */
 public class ConsumerProducerByBlockingQueue {
+    public static class Producer implements Runnable {
+        private final BlockingQueue<Integer> blockingQueue; // BlockingQueue for producer and consumer
+        private volatile boolean flag; // to determine when to stop the run()
+        private Random random;
+
+        public Producer(BlockingQueue<Integer> blockingQueue) {
+            this.blockingQueue = blockingQueue;
+            this.flag = false;
+            this.random = new Random();
+        }
+
+        @Override
+        public void run() {
+            while (!flag) {
+                int info = random.nextInt(100); // create a random number within 100 as info of this model
+                try {
+                    blockingQueue.put(info);
+                    System.out.println(Thread.currentThread().getName() + " produce " + info); // print current
+                                                                                      // producer and its product
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public void shutdown() {
+            this.flag = true;
+        }
+    }
+
+    public static class Consumer implements Runnable {
+        private final BlockingQueue<Integer> blockingQueue;
+        private volatile boolean flag;
+
+        public Consumer(BlockingQueue<Integer> blockingQueue) {
+            this.blockingQueue = blockingQueue;
+            this.flag = false;
+        }
+
+        @Override
+        public void run() {
+            while (!flag) {
+                try {
+                    int info = this.blockingQueue.take();
+                    System.out.println(Thread.currentThread().getName() + " consume " + info);
+                    Thread.sleep(50);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+
+        public void shutdown() {
+            this.flag = true;
+        }
+    }
+
+    // test
+    public static void main(String[] args) {
+        // create a BlockingQueue for producer and consumer with fixed size 10
+        BlockingQueue<Integer> blockingQueue = new ArrayBlockingQueue<>(10);
+        Producer producer = new Producer(blockingQueue);
+        Consumer consumer = new Consumer(blockingQueue);
+
+        // create 5 producers and 5 consumers
+        for (int i = 0; i < 10; i++) {
+            if (i < 5) {
+                new Thread(producer, "Producer " + i).start();
+            } else {
+                new Thread(consumer, "Consumer " + i).start();
+            }
+        }
+
+        try {
+            Thread.sleep(1000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        producer.shutdown();
+        consumer.shutdown();
+    }
 }
