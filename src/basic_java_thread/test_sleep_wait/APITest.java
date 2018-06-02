@@ -14,6 +14,33 @@ package basic_java_thread.test_sleep_wait;
       same monitor and calls notify( ).
    5. notify() wakes up the first thread that called wait() on the same object.
  */
+
+/**
+ * wait() method
+ *  1. Defined in class Object. Inherited by all objects.
+ *  2. A thread invoking wait() will suspend the thread.
+ *  3. A thread invoking wait() must own the intrinsic lock of the object it is calling wait() from
+ *  4. If we are going to call this.wait(), it has to be in synchronized(this) block.
+ *  5. wait() method must be in a try-catch block that catches InterruptedException
+ *  6. All threads that call wait() on an object are placed in a pool of waiting threads for that object
+ */
+
+/**
+ * notify() method
+ *  1. Defined in class Object. Inherited by all objects.
+ *  2. Execution resumes when another thread calls the notify() method of the object our first thread is waiting on
+ *  3. When the notify method of an object is called, then a single waiting thread ob that object is signaled to get
+ *     ready to resume execution
+ *  4. After our Producer releases the lock, our Consumer thread gets the lock once again and resumes its execution
+ */
+
+/**
+ * notifyAll() method
+ *  1. Defined in class Object. Inherited by all objects.
+ *  2. Notifies all the waiting threads.
+ *  3. These waiting threads would then compete to see which single thread resumes execution, the rest of the threads
+ *     would once again wait
+ */
 public class APITest {
     public static void main(String[] args) {
         ThreadB threadB = new ThreadB();
