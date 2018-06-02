@@ -23,6 +23,13 @@ package basic_java_thread.intro_to_synchronized_and_lock;
  *      6. If there are multiple threads waiting on this lock, they would compete and then decide who to take over the
  *         lock   (ReentrantLock is unfair lock and synchronized does not guarantee order as well)
  *
+ * Tips:
+ *      1. If an object has both synchronized methods and regular methods, then only one thread can
+ *      run the synchronized method while regular methods can be run by multiple threads
+ *
+ *      2. Threads that you want to have synchronized must share the same monitor object (MyPrinter) in this example
+ *
+ *
  */
 public class TestSynchronized {
     /**
