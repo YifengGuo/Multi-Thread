@@ -79,3 +79,61 @@ class MyPrinter {
         System.out.println(); // newline after print value for 10 times
     }
 }
+
+/**
+ * synchronized blocks
+ * advantage than declare in the method declaration:
+ *  1. flexibility: in case we want the intrinsic lock comes from an object other than current object
+ *     class MyThread {
+ *         public void run() {
+ *             for (int j = 0; j < 2; j++) {
+ *                 synchronized(printer) {    // get the intrinsic lock of MyPrinter other than the thread itself
+ *                     printer.print10(i);
+ *                 }
+ *             }
+ *         }
+ *     }
+ */
+class MyPrinter2 {
+   public void print10(int value) {
+       synchronized (this) { // specify what object the intrinsic lock comes from
+           for (int i = 0; i < 10; i++) {
+               System.out.print(value);
+           }
+           System.out.println();
+       }
+   }
+}
+
+/**
+ * Multiple locks in Java
+ * The blocks inside print10() and square() can run at the same time
+ * because they use different objects for their locking mechanism
+ *
+ * Synchronization still applies.For example only a single thread can 
+ * run the synchronized block in square() at any point in time
+ *
+ * Tips:
+ *     1. Any object in Java can be used as a lock
+ *     2. Synchronized blocks with different locks can be run by differnt threads at the same time
+ *     3. Only one thread in synchronized block. As many threads everywhere else
+ */
+class MyPrinterMultipleLocks {
+    Object lock1 = new Object();
+    Object lock2 = new Object();
+
+    public void print10(int value) {
+        synchronized (lock1) {
+            for (int i = 0; i < 10; i++) {
+                System.out.print(value);
+            }
+            System.out.println();
+        }
+    }
+
+    public int squre(int value) {
+        synchronized (lock2) {
+            return value * value;
+        }
+    }
+}
