@@ -29,7 +29,7 @@ package basic_java_thread.test_sleep_wait;
  * notify() method
  *  1. Defined in class Object. Inherited by all objects.
  *  2. Execution resumes when another thread calls the notify() method of the object our first thread is waiting on
- *  3. When the notify method of an object is called, then a single waiting thread ob that object is signaled to get
+ *  3. When the notify method of an object is called, then a single waiting thread on that object is signaled to get
  *     ready to resume execution
  *  4. After our Producer releases the lock, our Consumer thread gets the lock once again and resumes its execution
  */
