@@ -1,4 +1,4 @@
-package basic_java_thread.concurrent_utils.countdownlatch;
+package basic_java_thread.concurrent_utils;
 
 import java.util.ArrayList;
 import java.util.List;

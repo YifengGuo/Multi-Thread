@@ -1,4 +1,4 @@
-package basic_java_thread.concurrent_utils.countdownlatch;
+package basic_java_thread.concurrent_utils;
 
 /**
  * Created by guoyifeng on 4/24/19

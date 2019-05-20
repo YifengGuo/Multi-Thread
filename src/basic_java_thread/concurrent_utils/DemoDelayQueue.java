@@ -1,10 +1,9 @@
-package basic_java_thread.concurrent_utils.countdownlatch;
+package basic_java_thread.concurrent_utils;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.*;
-import java.util.concurrent.locks.ReentrantLock;
 
 import static java.util.concurrent.TimeUnit.MILLISECONDS;
 import static java.util.concurrent.TimeUnit.NANOSECONDS;
