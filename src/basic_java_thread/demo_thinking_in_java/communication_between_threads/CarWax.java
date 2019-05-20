@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit;
  * Demo for wait(), notify() and notifyAll() in java
  * notifyAll() will only wake up threads who are waiting for the same lock (current object who invokes notifyAll())
  * Unlike Thread.sleep() and Thread.yield(), wait() will RELEASE the lock current thread was once holding
- * Car need to be waxed on after polished
+ * Car need to be waxed on before polished
  * And waxing another coat must wait for polishing
  */
 public class CarWax {
