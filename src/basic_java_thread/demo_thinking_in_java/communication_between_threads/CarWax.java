@@ -62,7 +62,7 @@ class WaxOn implements Runnable {
     @Override
     public void run() {
         try {
-            while (!Thread.interrupted()) {
+            while (!Thread.interrupted()) {  // spin lock
                 System.out.println("Wax On! ");
                 TimeUnit.MILLISECONDS.sleep(200);
                 car.waxed();
@@ -85,7 +85,7 @@ class Polish implements Runnable {
     @Override
     public void run() {
         try {
-            while (!Thread.interrupted()) {
+            while (!Thread.interrupted()) {  // spin lock
                 car.waitingForWax();  // polishing can only possibly be done after waxing is done
                                       // so if wax on never happens, polishing will be blocked
                 System.out.println("Polished! ");
