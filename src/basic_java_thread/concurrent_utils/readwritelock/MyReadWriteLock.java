@@ -36,9 +36,7 @@ public class MyReadWriteLock {
 
     private Thread writingThread = null; // maintain thread reference which currently holds write lock
 
-    private int writeRequest = 0; // count of write requests which are waiting for the lock
-
-    private int writeAccess = 0;  // count of locks which are held by write thread reentrance
+    private int writeAccess = 0;  // count of locks which are held by write thread (including reentrance)
 
     public synchronized void lockRead() throws InterruptedException {
         Thread callingThread = Thread.currentThread();
@@ -68,12 +66,10 @@ public class MyReadWriteLock {
     }
 
     public synchronized void lockWrite() throws InterruptedException {
-        writeRequest++;
         Thread callingThread = Thread.currentThread();
         while (!canGrantWriteAccess(callingThread)) {
             wait();
         }
-        writeRequest--;
         writeAccess++;
         writingThread = callingThread;
     }
