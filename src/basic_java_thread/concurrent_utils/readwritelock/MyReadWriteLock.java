@@ -2,7 +2,6 @@ package basic_java_thread.concurrent_utils.readwritelock;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -57,7 +56,7 @@ public class MyReadWriteLock {
                             " hold a read lock on this ReadWriteLock");
         }
         int accessCount = readingThreads.getOrDefault(callingThread, 0);
-        if (accessCount == 0) {
+        if (accessCount == 1) {  // current read thread only hold on read lock, remove key from the reading map
             readingThreads.remove(callingThread);
         } else {
             readingThreads.put(callingThread, accessCount - 1);
