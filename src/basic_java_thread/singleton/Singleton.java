@@ -16,7 +16,9 @@ class UnsafeLazySingleton {
 
     public static UnsafeLazySingleton getInstance() {
         if (INSTANCE == null) {  // Thread A
-            INSTANCE = new UnsafeLazySingleton();  // Thread B
+            INSTANCE = new UnsafeLazySingleton();  // problems happens here:
+                                                   // Thread B, because 1-2-3 or 1-3-2 reorder during Thread A is initializing class,
+                                                   // may see an uninitialized class  ("3" instance = memory so INSTANCE is not null but "2" ctorInstance(memory) is on the way)
         }
         return INSTANCE;
     }
