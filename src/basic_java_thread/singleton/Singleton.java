@@ -147,7 +147,7 @@ class VolatileSingleton {
  *
  */
 class Singleton0 {
-    private static class SingletonHolder {
+    private static class SingletonHolder {  // based on JVM class initialization process, this static class initialization as-if creates an implicit critical section
         public static final Singleton0 INSTANCE = new Singleton0();  // initialization of class, state = initializing, other threads does not hold lock and are waiting for lock condition signalAll()
     }
     private Singleton0 () {}
