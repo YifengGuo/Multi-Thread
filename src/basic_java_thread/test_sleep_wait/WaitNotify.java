@@ -46,6 +46,12 @@ public class WaitNotify {
         @Override
         public void run() {
             synchronized (lock) {
+                // acquire the lock, then notify waiting threads on "lock" obj
+                // current thread will not release lock during notify() all notifyAll()
+                // WaitThread can return from wait() unless current thread completely releases the lock
+                // WaitThread's state will change from WAITING to BLOCKED
+                // because WaitThread is moved from waiting queue to synchronized queue
+                // and tries to acquire the lock again
                 try {
                     System.out.println(Thread.currentThread() + " holds lock. Notify @ " +
                             new SimpleDateFormat("HH:mm:ss").format(new Date()));
