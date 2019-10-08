@@ -23,18 +23,18 @@ public class DemoCountDownLatch2 {
     private static final int WORKER_COUNT = 10;
 
     public static void main(String[] args) {
-        CountDownLatch startSingal = new CountDownLatch(1);
-        CountDownLatch completeSingal = new CountDownLatch(WORKER_COUNT);
+        CountDownLatch startSignal = new CountDownLatch(1);
+        CountDownLatch completeSignal = new CountDownLatch(WORKER_COUNT);
 
         ExecutorService exec = Executors.newCachedThreadPool();
 
-        exec.submit(new Driver(startSingal, completeSingal));
+        exec.submit(new Driver(startSignal, completeSignal));
 
         for (int i = 0; i < WORKER_COUNT; ++i) {
-            exec.submit(new Worker(startSingal, completeSingal));
+            exec.submit(new Worker(startSignal, completeSignal));
         }
 
-        if (completeSingal.getCount() == 0) {
+        if (completeSignal.getCount() == 0) {
             System.out.println("All job done");
         }
         exec.shutdown();
@@ -90,7 +90,7 @@ class Worker implements Runnable {
             System.out.println("Worker " + this + " job done");
             completeSignal.countDown();
         } catch (InterruptedException e) {
-            System.out.println("Woker " + this + " exiting via interrupting");
+            System.out.println("Worker " + this + " exiting via interrupting");
         }
     }
 
