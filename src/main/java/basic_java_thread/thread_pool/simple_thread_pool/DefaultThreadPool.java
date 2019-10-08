@@ -109,7 +109,7 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
                     long remaining = WAITING_MILLIS;
                     while (jobDeque.isEmpty() && remaining > 0) { // wait if there's no task
                         try {
-                            jobDeque.wait(1000);
+                            jobDeque.wait(WAITING_MILLIS);
                             remaining = future - System.currentTimeMillis();
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
@@ -128,6 +128,7 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
                         e.printStackTrace();
                     }
                 } else {
+                    // corner case when there is no more job in the deque and wait() is timeout
                     System.out.println("no job retrieved");
                 }
             }
