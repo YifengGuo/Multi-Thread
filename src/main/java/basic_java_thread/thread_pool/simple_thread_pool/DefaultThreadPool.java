@@ -109,14 +109,14 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
                             Thread.currentThread().interrupt();
                             return;
                         }
-                        // get one job from task deque
-                        job = jobDeque.removeFirst();
-                        if (job != null) {
-                            try {
-                                job.run();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
+                    }
+                    // get one job from task deque
+                    job = jobDeque.removeFirst();
+                    if (job != null) {
+                        try {
+                            job.run();
+                        } catch (Exception e) {
+                            e.printStackTrace();
                         }
                     }
                 }
