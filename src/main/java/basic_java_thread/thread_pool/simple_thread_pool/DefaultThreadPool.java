@@ -4,6 +4,7 @@ import com.google.common.base.Preconditions;
 
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicLong;
 
 /**
@@ -96,29 +97,38 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
 
         private volatile boolean isRunning = true;
 
+        private static final long WAITING_MILLIS = 1000L;
+
         @Override
         public void run() {
             while (isRunning) {
                 Job job = null;
                 // classic wait/notify template
                 synchronized (jobDeque) {
-                    while (jobDeque.isEmpty()) { // wait if there's no task
+                    long future = System.currentTimeMillis() + WAITING_MILLIS;
+                    long remaining = WAITING_MILLIS;
+                    while (jobDeque.isEmpty() && remaining > 0) { // wait if there's no task
                         try {
-                            jobDeque.wait();
+                            jobDeque.wait(1000);
+                            remaining = future - System.currentTimeMillis();
                         } catch (InterruptedException e) {
                             Thread.currentThread().interrupt();
                             return;
                         }
                     }
                     // get one job from task deque
-                    job = jobDeque.removeFirst();
-                    if (job != null) {
-                        try {
-                            job.run();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
+                    if (!jobDeque.isEmpty()) {
+                        job = jobDeque.removeFirst();
                     }
+                }
+                if (job != null) {
+                    try {
+                        job.run();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    System.out.println("no job retrieved");
                 }
             }
         }
@@ -128,19 +138,20 @@ public class DefaultThreadPool<Job extends Runnable> implements ThreadPool<Job> 
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws Exception {
         DefaultThreadPool<Task> threadPool = new DefaultThreadPool<>(6);
-        for (int i = 0; i < 10; ++i) {
+        for (int i = 0; i < 100; ++i) {
             Task t = new Task();
             threadPool.execute(t);
         }
+        TimeUnit.SECONDS.sleep(1);
         threadPool.shutdown();
     }
 
     static class Task implements Runnable {
         @Override
         public void run() {
-            System.out.println(ThreadLocalRandom.current().nextLong(1000));
+            System.out.println(Thread.currentThread().getName() + " finishes the job: " + ThreadLocalRandom.current().nextLong(1000));
         }
     }
 }
