@@ -25,9 +25,24 @@ public class TestThreadLocal {
         return System.currentTimeMillis() - TIME_THREADLOCAL.get();
     }
 
+    static class TestTask implements Runnable {
+
+        private static final ThreadLocal<String> threadLocal = ThreadLocal.withInitial(() -> Thread.currentThread().getName());
+
+        @Override
+        public void run() {
+            System.out.println(threadLocal.get());
+        }
+    }
+
     public static void main(String[] args) throws Exception {
         begin();
         TimeUnit.SECONDS.sleep(1);
         System.out.println(end());
+
+        // test ThreadLocal semantics
+        for (int i = 0; i < 5; ++i) {
+            new Thread(new TestTask(), String.valueOf(i)).start();
+        }
     }
 }
