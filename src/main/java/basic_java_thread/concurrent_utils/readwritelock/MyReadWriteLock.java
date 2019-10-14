@@ -16,17 +16,14 @@ import java.util.concurrent.TimeUnit;
  *      Read: neither any thread is doing write operation, nor any thread is requesting write operation
  *      Write: no thread is currently doing write or read operations
  *
- *  Reentrance for read and write operation:
+ *  Reentrancy for read and write operation:
  *          read reentrance: either there is no write operation and write request or current thread has lock already.
  *                                  use a Map to maintain mapping between a thread and the count of locks it holds
  *
  *          write reentrance: Only work when current thread has write lock already
  *
  *
- *  Read lock upgrade to Write lock: this read lock owns read lock and is the only thread who owns read lock and no write lock owned
- *                                   by any other thread
- *
- *  Write lock degrade to Read lock: always safe (current thread holding write lock means there is no other writing threads or
+ *  Write lock downgrade to Read lock: always safe (current thread holding write lock means there is no other writing threads or
  *                                   reading threads)
  *
  */
