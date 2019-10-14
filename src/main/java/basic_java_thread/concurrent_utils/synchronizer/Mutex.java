@@ -39,6 +39,10 @@ public class Mutex {
          * mutually acquire lock when state == 0
          * if the state of the object permits it to be acquired in the
          * exclusive mode, and if so to acquire it.
+         *
+         * This simple Mutex Lock does NOT support reentrant feature so if one thread
+         * has acquired this lock successfully before, and try to acquire this lock again
+         * this thread will be blocked
          * @param arg
          * @return
          */
